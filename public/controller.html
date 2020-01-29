@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <h1>CONTROL ME</h1>
+        <button id="red" style="background-color:red; color:whitesmoke;">RED</button>
+        <button id="green" style="background-color:green; color:whitesmoke;">GREEN</button>
+        <button id="blue" style="background-color:blue; color:whitesmoke;">BLUE</button>
+
+        <!-- adding script tag at the end so that the body loads first -->
+        <script>
+            let socket = io();
+
+            socket.on('connect', function(){
+                console.log("I am connected");
+            });
+
+            //add click events
+            document.querySelector("#red").addEventListener('click', function(){
+                socket.emit('red');
+            });
+
+            document.querySelector("#green").addEventListener('click', function(){
+                socket.emit('green');
+            });
+            
+            document.querySelector("#blue").addEventListener('click', function(){
+                socket.emit('blue');
+            });
+        </script>
+    </body>
+</html>
