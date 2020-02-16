@@ -1,10 +1,35 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.js"></script>
+        <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.js"></script>
+        <!-- <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.js"></script> -->
+        <!-- <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.js"></script> -->
+        <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.js"></script>
     </head>
     <body>
         <h1>ciao amici!</h1>
-        <a href="/color">Colour Page</a>
-        <a href="/controller">Controller Page</a>
+        <!-- <a href="/color">Colour Page</a>
+        <a href="/controller">Controller Page</a> -->
+
+        <a-scene>
+            <a-entity geometry="primitive: box; width: 3" class="grabbable" material="color: red" >
+            </a-entity>
+
+            <a-entity camera
+                      wasd-controls
+                      look-controls="pointerLockEnabled:true"
+                      position="0 1.2 1.5"
+                      capture-mouse
+                      raycaster="objects: .grabbable; far: 5; interval: 100;"
+                      cursor="rayOrigin:mouse"
+                      static-body="shape: sphere;"
+                      super-hands="colliderEvent: raycaster-intersection;
+                             colliderEventProperty: els;
+                             colliderEndEvent:raycaster-intersection-cleared;
+                             colliderEndEventProperty: clearedEls;">
+            </a-entity>
+        </a-scene>
     </body>
 </html>

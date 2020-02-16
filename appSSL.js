@@ -16,6 +16,8 @@ const forge     = require('node-forge');
 const fs        = require('fs');
 const express   = require('express');
 const app       = express();
+const server    = https.createServer(app);
+const socketIO = require('socket.io')(server); //get package and instantiate with server
 
 //const vars
 const LISTEN_PORT = 8080;
@@ -26,6 +28,40 @@ app.use(express.static(__dirname + '/public'));
 /************* CREATE ROUTES ***************/
 app.get('/', function(req, res) {
     res.sendFile(__dirname + 'public/index.html');
+});
+
+//colour
+app.get('/color', function(req,res) {
+    res.sendFile(__dirname + '/public/color.html');
+});
+//controller
+app.get('/controller', function(req,res) {
+    res.sendFile(__dirname + '/public/controller.html');
+});
+
+//websocket events
+socketIO.on('connection', function(socket){
+    console.log(socket.id + " has connected!");
+
+    socket.on('disconnect', function(data){
+        console.log(socket.id + " has disconnected!");
+    })
+
+    //custom events
+    socket.on('red', function(data){
+        console.log("red event heard");
+        socketIO.sockets.emit('color_change', {r:255, g:0, b:0});
+    });
+
+    socket.on('green', function(data){
+        console.log("green event heard");
+        socketIO.sockets.emit('color_change', {r:0, g:255, b:0});
+    });
+
+    socket.on('blue', function(data){
+        console.log("blue event heard");
+        socketIO.sockets.emit('color_change', {r:0, g:0, b:255});
+    });
 });
 
 /************* LOAD SSL CERTS (if you ran 'node createCerts.js') ***************/
