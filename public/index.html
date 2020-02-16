@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="/socket.io/socket.io.js"></script>
         <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.js"></script>
         <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.js"></script>
         <script src="https://unpkg.com/aframe-physics-extras@0.1.2/dist/aframe-physics-extras.js"></script>
         <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.js"></script>
         <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
 
         <script>
             function detectMobile() { //to detect if the device is smaller (make it easier instead of installing that whole library)
@@ -32,17 +33,81 @@
                 //set background colour
                 document.body.style.backgroundColor = colorStr;
             });
+
         </script>
     </head>
     <body>
         <a-scene >
+            <!-- <a-entity   environment="preset: forest; dressingAmount: 500"
+                        position="0 -1 0">
+            </a-entity> -->
+            
+            <a-assets>
+
+            </a-assets>
+
+            <a-entity id="bottomBound"
+                      position="0 -1 0"
+                      rotation="-90 0 0"
+                      geometry="primitive: plane; width: 40; height: 40;"
+                      scale="1 1 1"
+                      material="color: #939393; opacity: 0.5; transparent: true"
+                      static-body
+                      shadow>
+            </a-entity>
+            <a-entity id="frontBound"
+                      position="0 9 -20"
+                      rotation="0 0 0"
+                      scale="1 1 1"
+                      geometry="primitive: plane; width: 40; height: 20;"
+                      material="color: grey; opacity: 0.5; transparent: true"
+                      static-body
+                      shadow>
+            </a-entity>
+            <a-entity id="leftBound"
+                      position="-20 9 0"
+                      rotation="0 90 0"
+                      scale="1 1 1"
+                      geometry="primitive: plane; width: 40; height: 20;"
+                      material="color: #d3d3d3; opacity: 0.5; transparent: true"
+                      static-body
+                      shadow>
+            </a-entity>
+            <a-entity id="backBound"
+                      position="0 9 20"
+                      rotation="-180 0 0"
+                      scale="1 1 1"
+                      geometry="primitive: plane; width: 40; height: 20;"
+                      material="color: grey; opacity: 0.5; transparent: true"
+                      static-body
+                      shadow>
+            </a-entity>
+            <a-entity id="rightBound"
+                      position="20 9 0"
+                      rotation="0 -90 0"
+                      scale="1 1 1"
+                      geometry="primitive: plane; width: 40; height: 20;"
+                      material="color: #d3d3d3; opacity: 0.5; transparent: true"
+                      static-body
+                      shadow>
+            </a-entity>
+            <a-entity id="upperBound"
+                      position="0 19 0"
+                      rotation="90 0 0"
+                      scale="1 1 1"
+                      geometry="primitive: plane; width: 40; height: 40;"
+                      material="color: #a8a8a8; opacity: 0.5; transparent: true"
+                      static-body
+                      shadow>
+            </a-entity>
+
             <!-- environment -->
             <a-entity id="groundPlane"
                       position="0 0 0"
                       rotation="-90 0 0"
                       scale="1 1 1"
                       geometry="primitive: plane; width: 10; height: 10;"
-                      material="color: grey; metalness: 0.5"
+                      material="color: grey; metalness: 0.5; side: double;"
                       static-body
                       shadow>
             </a-entity>
@@ -51,7 +116,7 @@
                       rotation="0 0 0"
                       scale="1 1 1"
                       geometry="primitive: plane; width: 10; height: 3;"
-                      material="color: grey; metalness: 0.5;"
+                      material="color: grey; metalness: 0.5; side: double;"
                       static-body
                       shadow>
             </a-entity>
@@ -60,7 +125,7 @@
                       rotation="0 90 0"
                       scale="1 1 1"
                       geometry="primitive: plane; width: 10; height: 10;"
-                      material="color: grey; metalness: 1;"
+                      material="color: grey; metalness: 1; side: double;"
                       static-body
                       shadow>
             </a-entity>
@@ -69,7 +134,7 @@
                       rotation="-180 0 0"
                       scale="1 1 1"
                       geometry="primitive: plane; width: 10; height: 10;"
-                      material="color: grey; metalness: 0.5;"
+                      material="color: grey; metalness: 0.5; side: double;"
                       static-body
                       shadow>
             </a-entity>
@@ -78,7 +143,7 @@
                       rotation="0 -90 0"
                       scale="1 1 1"
                       geometry="primitive: plane; width: 10; height: 10;"
-                      material="color: grey; metalness: 1;"
+                      material="color: grey; metalness: 1; side: double;"
                       static-body
                       shadow>
             </a-entity>
@@ -87,15 +152,15 @@
                       rotation="90 0 0"
                       scale="1 1 1"
                       geometry="primitive: plane; width: 10; height: 10;"
-                      material="color: grey; metalness: 0.5;"
+                      material="color: grey; metalness: 0.5; side: double;"
                       static-body
                       shadow>
             </a-entity>
 
             
             <a-entity   geometry="primitive: box; width: 1; height: 1; depth: 1;"
-                        position="0 0.6 -1"
-                        hoverable grabbable draggable droppable
+                        position="-1 0.6 -1"
+                        hoverable grabbable draggable
                         class="grabbable"
                         dynamic-body="shape: box; mass: 2;"
                         material="color: blue; metalness: 0.2;"
@@ -106,7 +171,7 @@
 
             <a-entity   geometry="primitive: sphere; radius: 1;"
                         position="0 0.6 -1"
-                        hoverable grabbable draggable droppable
+                        hoverable grabbable draggable
                         class="grabbable"
                         dynamic-body="shape: sphere; mass: 2;"
                         material="color: red; metalness: 0.2;"
@@ -115,12 +180,45 @@
                         event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false">
             </a-entity>
 
-            <a-entity   geometry="primitive: cylinder; radius: 1;"
-                        position="0 0.6 -1"
-                        hoverable grabbable draggable droppable
+            <a-entity   geometry="primitive: dodecahedron; radius: 1;"
+                        position="1 0.6 -1"
+                        hoverable grabbable draggable
                         class="grabbable"
-                        dynamic-body="shape: cylinder; mass: 2;"
+                        dynamic-body="shape: dodecahedron; mass: 2;"
                         material="color: green; metalness: 0.2;"
+                        shadow
+                        event-set__hoveron="_event: hover-start; material.opacity: 0.8; transparent: true"
+                        event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false">
+            </a-entity>
+
+            <a-entity   geometry="primitive: torusKnot; radius: 1; p: 3; q:7"
+                        position="2 0.6 -1"
+                        hoverable grabbable draggable
+                        class="grabbable"
+                        dynamic-body="mass: 2;"
+                        material="color: yellow; metalness: 0.2;"
+                        shadow
+                        event-set__hoveron="_event: hover-start; material.opacity: 0.8; transparent: true"
+                        event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false">
+            </a-entity>
+
+            <a-entity   geometry="primitive: torusKnot; radius: 1; p: 2; q:3"
+                        position="3 0.6 -1"
+                        hoverable grabbable draggable
+                        class="grabbable"
+                        dynamic-body="mass: 2;"
+                        material="color: purple; metalness: 0.2;"
+                        shadow
+                        event-set__hoveron="_event: hover-start; material.opacity: 0.8; transparent: true"
+                        event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false">
+            </a-entity>
+
+            <a-entity   geometry="primitive: torusKnot; radius: 1; p: 1; q:5"
+                        position="3 0.6 -1"
+                        hoverable grabbable draggable
+                        class="grabbable"
+                        dynamic-body="mass: 2;"
+                        material="color: orange; metalness: 0.2;"
                         shadow
                         event-set__hoveron="_event: hover-start; material.opacity: 0.8; transparent: true"
                         event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false">
@@ -143,11 +241,12 @@
             </a-entity>
 
             <!-- camera and cursor -->
+            <!-- https://wmurphyrd.github.io/aframe-super-hands-component/examples/ -->
             <a-entity camera
                       wasd-controls
                       look-controls="pointerLockEnabled:true"
                       position="0 2 1.5"
-                      raycaster="objects: .grabbable; far: 5; interval: 100;"
+                      raycaster="objects: .grabbable; far: 3; interval: 100;"
                       cursor="rayOrigin:mouse"
                       static-body="shape: sphere;"
                       super-hands="colliderEvent: raycaster-intersection;
@@ -155,7 +254,8 @@
                              colliderEndEvent:raycaster-intersection-cleared;
                              colliderEndEventProperty: clearedEls;">
                              
-                             <a-entity  cursor="fuse: true; fusetimeout: 500"
+                             <a-entity  cursor="fuse: true;"
+                                        raycaster="objects: .grabbable; far: 3; interval: 100;"
                                         super-hands="colliderevent: raycaster-intersection;
                                             collidereventproperty: els;
                                             colliderendevent: raycaster-intersection-cleared;
