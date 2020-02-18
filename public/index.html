@@ -10,6 +10,8 @@
         <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.js"></script>
         <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
 
+        <script src="throw-away-component.js"></script>
+
         <script>
             function detectMobile() { //to detect if the device is smaller (make it easier instead of installing that whole library)
                 return (( window.innerWidth <= 1080 ));
@@ -34,10 +36,18 @@
                 document.body.style.backgroundColor = colorStr;
             });
 
+            AFRAME.registerComponent("foo", {
+                init: function() {
+                    this.el.addEventListener("collisions", (e)=>{
+                        console.log(e)
+                        console.log("hit something")
+                    })
+                }
+            })
         </script>
     </head>
     <body>
-        <a-scene >
+        <a-scene physics='gravity: -9.8'>
             <!-- <a-entity   environment="preset: forest; dressingAmount: 500"
                         position="0 -1 0">
             </a-entity> -->
@@ -158,13 +168,19 @@
             </a-entity>
 
             
-            <a-entity   geometry="primitive: box; width: 1; height: 1; depth: 1;"
-                        position="-1 0.6 -1"
+            <a-entity   id="blueCube"
+                        geometry="primitive: box; width: 1; height: 1; depth: 1;"
+                        position="-1 1.6 -1"
                         hoverable grabbable draggable
                         class="grabbable"
                         dynamic-body="shape: box; mass: 2;"
                         material="color: blue; metalness: 0.2;"
                         shadow
+                        super-hands="colliderEvent: collisions;
+                            colliderEventProperty: els;
+                            colliderEndEvent: collisions;
+                            colliderEndEventProperty: clearedEls"
+                        throw-away-component
                         event-set__hoveron="_event: hover-start; material.opacity: 0.8; transparent: true"
                         event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false">
             </a-entity>
@@ -184,7 +200,7 @@
                         position="1 0.6 -1"
                         hoverable grabbable draggable
                         class="grabbable"
-                        dynamic-body="shape: dodecahedron; mass: 2;"
+                        dynamic-body="shape: convex; mass: 2;"
                         material="color: green; metalness: 0.2;"
                         shadow
                         event-set__hoveron="_event: hover-start; material.opacity: 0.8; transparent: true"
@@ -195,7 +211,7 @@
                         position="2 0.6 -1"
                         hoverable grabbable draggable
                         class="grabbable"
-                        dynamic-body="mass: 2;"
+                        dynamic-body="shape: convex; mass: 2;"
                         material="color: yellow; metalness: 0.2;"
                         shadow
                         event-set__hoveron="_event: hover-start; material.opacity: 0.8; transparent: true"
@@ -206,7 +222,7 @@
                         position="3 0.6 -1"
                         hoverable grabbable draggable
                         class="grabbable"
-                        dynamic-body="mass: 2;"
+                        dynamic-body="shape: convex; mass: 2;"
                         material="color: purple; metalness: 0.2;"
                         shadow
                         event-set__hoveron="_event: hover-start; material.opacity: 0.8; transparent: true"
@@ -217,7 +233,7 @@
                         position="3 0.6 -1"
                         hoverable grabbable draggable
                         class="grabbable"
-                        dynamic-body="mass: 2;"
+                        dynamic-body="shape: convex; mass: 2;"
                         material="color: orange; metalness: 0.2;"
                         shadow
                         event-set__hoveron="_event: hover-start; material.opacity: 0.8; transparent: true"
@@ -245,8 +261,8 @@
             <a-entity camera
                       wasd-controls
                       look-controls="pointerLockEnabled:true"
-                      position="0 2 1.5"
-                      raycaster="objects: .grabbable; far: 3; interval: 100;"
+                      position="0 4 1.5"
+                      raycaster="objects: .grabbable; far: 5; interval: 100;"
                       cursor="rayOrigin:mouse"
                       static-body="shape: sphere;"
                       super-hands="colliderEvent: raycaster-intersection;
