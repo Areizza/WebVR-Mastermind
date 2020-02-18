@@ -5,14 +5,8 @@ AFRAME.registerComponent('throw-away-component', {
     init: function()  {
         const Context_AF = this; //this refers to "this" component, keep this context
 
-        //add event listener for "click" event on whatever entity has this component
-        Context_AF.el.addEventListener('mousedown', function(event) {
-            //console.log("clicked!!!!!!!!");
-        });
-
+        //when user lets go of the object
         Context_AF.el.addEventListener('mouseup', function(event) {
-            //console.log("up!!!!!!!!");
-
             let posZ = this.getAttribute("position").z;
             let posY = this.getAttribute("position").y;
             let posX = this.getAttribute("position").x;
@@ -23,19 +17,18 @@ AFRAME.registerComponent('throw-away-component', {
 
                     var id = this.getAttribute("id");
 
+                    //the first box
                     if (posX <= -9 && posX >= -12) {
-                        //console.log("score in 1");
-                        //console.log(id);
                         Context_AF.updatePlane(1, id);
                         Context_AF.updateButton();
                     }
+                    //the second box
                     if (posX <= 1.5 && posX >= -1.5) {
-                        //console.log("score in 2");
                         Context_AF.updatePlane(2, id);
                         Context_AF.updateButton();
                     }
+                    //the third box
                     if (posX <= 12 && posX >= 9) {
-                        //console.log("score in 3");
                         Context_AF.updatePlane(3, id);
                         Context_AF.updateButton();
                     }
