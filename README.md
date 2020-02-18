@@ -1,3 +1,17 @@
-# Websockets Lesson
+# Assignment 3: Multi-User Interactions 
 
-Https and web sockets and triggering events across two different web pages.
+![Codemaker](https://cdn.discordapp.com/attachments/185537871510241291/679442130607013898/unknown.png)
+![Codebreaker](https://cdn.discordapp.com/attachments/185537871510241291/679441770198597632/unknown.png)
+
+## Overview of what you did (i.e. what are the controls? Why this design?)
+I made a Mastermind game where the for this assignment. The user on the 2D platform (mobile) is the Codemaker who will give feedback to the Codebreaker on their guesses (see first image for interface). The user in the 3D space is the Codebreaker who must place the coloured objects in the three boxes and press the button to make a guess (see second image for a screenshot). The goal of the game is for the Codebreaker to try and guess the code. It is collaborative because if the Codebreaker does not receive any feedback, they will not have any idea how close they are to the real code. It is competitive because according to traditional Mastermind rules, the Codebreaker usually has a limit on how many guesses they are allowed to make (decided by both players at the start of the game) and if they are unsuccessful in deducing the code, the Codemaker wins the round. The two players are intended to switch roles after each round. The code is 3 colours and can contain repeated colours.
+
+The controls are simple, the Codebreaker picks up coloured objects and drops them into the three boxes (one for each of the colours in the code). If placed properly into the box, the colour names in each box will appear on the wall. If there is an object registered for each of the three boxes, the submit button will turn green and the Codebreaker will be able to make a valid guess.
+
+After the Codebreaker presses the submit button, their guess will be automatically displayed on the Codemaker's page. The Codemaker can then provide feedback via buttons by changing the colour of the background in the Codebreaker's scene. For instance, if the Codemaker does GREEN, SPACE, YELLOW, SPACE, YELLOW, that would mean that there is one object in the correct position and two objects that are the right colour but in the wrong position. 
+
+## What was challenging
+It was challenging to think of a game that could have both competitive and collaborative interactions. I also wanted to use different perspectives for the two players to provide an asynchronous experience, so one in 2D and one in 3D. I had some issues with physics not working properly when I first imported the libraries I wanted to use (aframe-physics and superhands) and I learned that nested static-body entities seem to break physics. I also learned that I needed more than just those two libraries to get what I wanted to have working. Using socket.io to pass an array of strings from the Codebreaker page to the Codemaker page also proved to be a challenge since in class, we implemented a static value to be passed to the new page in app.js but the variable I needed to pass was dynamic and from a different JavaScript file.
+
+## What went well (i.e. how did you solve the above challenges?)
+As aforementioned, I had to import more libraries to solve some of the issues I was having with physics and collision detection. I also examined the examples provided by the different libraries to better understand how to use the components properly. For socket.io, I used a global JavaScript variable to store the array (initialized in app.js) and referenced it using window.variableName in the appropriate JavaScript file to update its value. This worked well with emitting the correct data when clicking the submit button to send the Codebreaker's guess to the Codemaker.
