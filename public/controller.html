@@ -24,6 +24,17 @@
                 console.log("I am connected");
             });
 
+            //listening for 'check_answer' event then using the data/object sent
+            socket.on('check_answer', function(data){
+                // onlinecounter=data.total;
+                // console.log(data.total);
+                // for (var key in data.name) {
+                //     online[i]=key;
+                //     console.log(key);
+                // }
+                console.log("test function " + data)
+            });
+
             //add click events
             document.querySelector("#red").addEventListener('click', function(){
                 socket.emit('red');

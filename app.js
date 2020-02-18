@@ -12,10 +12,6 @@ app.use((express.static(__dirname + '/public'))); //set root dir to the public f
 app.get('/', function(req,res) {
     res.sendFile(__dirname + '/public/index.html');
 });
-//colour
-app.get('/color', function(req,res) {
-    res.sendFile(__dirname + '/public/color.html');
-});
 //controller
 app.get('/controller', function(req,res) {
     res.sendFile(__dirname + '/public/controller.html');
@@ -30,6 +26,14 @@ socketIO.on('connection', function(socket){
     })
 
     //custom events
+    var connectedUserNames = [1, 2, 3];
+    socket.on('submitButton', function(data){
+        console.log("checking event heard");
+        console.log(connectedUserNames)
+        console.log(data);
+        socketIO.sockets.emit('check_answer', answer);
+    });
+
     socket.on('red', function(data){
         console.log("red event heard");
         socketIO.sockets.emit('color_change', {r:255, g:0, b:0});

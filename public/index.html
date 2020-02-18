@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- libraries -->
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.js"></script>
@@ -10,7 +11,9 @@
         <script src="https://unpkg.com/super-hands@3.0.0/dist/super-hands.js"></script>
         <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
 
+        <!-- my scripts -->
         <script src="throw-away-component.js"></script>
+        <script src="check-answer-component.js"></script>
 
         <script>
             function detectMobile() { //to detect if the device is smaller (make it easier instead of installing that whole library)
@@ -21,6 +24,7 @@
                 window.location.replace("/controller")
             }
 
+            // socket.io stuff
             let socket = io();
 
             socket.on('connect', function(){
@@ -35,27 +39,10 @@
                 //set background colour
                 document.body.style.backgroundColor = colorStr;
             });
-
-            AFRAME.registerComponent("foo", {
-                init: function() {
-                    this.el.addEventListener("collisions", (e)=>{
-                        console.log(e)
-                        console.log("hit something")
-                    })
-                }
-            })
         </script>
     </head>
     <body>
-        <a-scene physics='gravity: -9.8'>
-            <!-- <a-entity   environment="preset: forest; dressingAmount: 500"
-                        position="0 -1 0">
-            </a-entity> -->
-            
-            <a-assets>
-
-            </a-assets>
-
+        <a-scene physics='gravity: -9.8; debug: true'>
             <a-entity id="bottomBound"
                       position="0 -1 0"
                       rotation="-90 0 0"
@@ -380,6 +367,57 @@
                         event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false">
             </a-entity>
 
+            <!-- show what is in the boxes -->
+            <a-entity   id="score1"
+                        material="color: black; shader: flat;"
+                        position="-10.5 4 -19"
+                        width="3"
+                        height="3"
+                        text="value: ">
+            </a-entity>
+            <a-entity   id="score2"
+                        material="color: black; shader: flat;"
+                        position="0 4 -19"
+                        width="3"
+                        height="3"
+                        text="value: ">
+            </a-entity>
+            <a-entity   id="score3"
+                        material="color: black; shader: flat;"
+                        position="10.5 4 -19"
+                        width="3"
+                        height="3"
+                        text="value: ">
+            </a-entity>
+
+            <!-- submission button -->
+            <a-entity   id="submitButton"
+                        hoverable grabbable
+                        static-body
+                        class="grabbable"
+                        geometry="primitive: cylinder"
+                        material="color: red; metalness: 0;"
+                        position="20 4 -9.5"
+                        rotation="90 90 0"
+                        radius="3"
+                        check-answer-component
+                        shadow
+                        super-hands="colliderEvent: collisions;
+                            colliderEventProperty: els;
+                            colliderEndEvent: collisions;
+                            colliderEndEventProperty: clearedEls">
+            </a-entity>
+            <a-entity   id="submitText"
+                        class="grabbable"
+                        material="shader: flat; side: double;"
+                        position="19 4 -9.5"
+                        rotation="180 90 180"
+                        width="3"
+                        height="3"
+                        text="value: SUBMIT; width: 10; align: center;"
+                        check-answer-component>
+            </a-entity>
+
             <!-- lights -->
             <a-entity light="type: point; color: #CCC; intensity: 0.25"
                       position="5 10 5">
@@ -401,8 +439,9 @@
             <a-entity camera
                       wasd-controls
                       look-controls="pointerLockEnabled:true"
+                      collider-check
                       position="0 3.5 1.5"
-                      raycaster="objects: .grabbable; far: 5; interval: 100;"
+                      raycaster="objects: .grabbable; far: 100; interval: 100;"
                       cursor="rayOrigin:mouse"
                       static-body="shape: sphere;"
                       super-hands="colliderEvent: raycaster-intersection;
@@ -411,7 +450,7 @@
                              colliderEndEventProperty: clearedEls;">
                              
                              <a-entity  cursor="fuse: true;"
-                                        raycaster="objects: .grabbable; far: 3; interval: 100;"
+                                        raycaster="objects: .grabbable; far: 20; interval: 100;"
                                         super-hands="colliderevent: raycaster-intersection;
                                             collidereventproperty: els;
                                             colliderendevent: raycaster-intersection-cleared;
