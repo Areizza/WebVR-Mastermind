@@ -14,9 +14,9 @@ answer = [];
 app.get('/', function(req,res) {
     res.sendFile(__dirname + '/public/index.html');
 });
-//controller
-app.get('/controller', function(req,res) {
-    res.sendFile(__dirname + '/public/controller.html');
+//codemaker
+app.get('/codemaker', function(req,res) {
+    res.sendFile(__dirname + '/public/codemaker.html');
 });
 
 //websocket events
@@ -44,25 +44,16 @@ socketIO.on('connection', function(socket){
         socketIO.sockets.emit('color_change', {r:0, g:255, b:0});
     });
 
-    socket.on('blue', function(data){
-        console.log("blue event heard");
-        socketIO.sockets.emit('color_change', {r:0, g:0, b:255});
-    });
-
     socket.on('yellow', function(data){
         console.log("yellow event heard");
         socketIO.sockets.emit('color_change', {r:255, g:255, b:0});
     });
 
-    socket.on('purple', function(data){
-        console.log("purple event heard");
-        socketIO.sockets.emit('color_change', {r:255, g:0, b:255});
+    socket.on('white', function(data){
+        console.log("white space event heard");
+        socketIO.sockets.emit('color_change', {r:255, g:255, b:255});
     });
 
-    socket.on('orange', function(data){
-        console.log("blue event heard");
-        socketIO.sockets.emit('color_change', {r:255, g:165, b:0});
-    });
 });
 
 //finally, start server

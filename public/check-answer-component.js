@@ -32,13 +32,15 @@ AFRAME.registerComponent('check-answer-component', {
         let score2 = document.getElementById('score2').getAttribute("text").value;
         let score3 = document.getElementById('score3').getAttribute("text").value;
 
-        let guess = [score1, score2, score3];
+        let guess = [];
 
         if(score1 != '' && score2 != '' && score3 != '') {
-            console.log("ready to submit")
+            //console.log("ready to submit")
+            guess = [score1, score2, score3];
         }
         else {
-            console.log("not enough to submit")
+            //console.log("not enough to submit")
+            guess = ['', '', '']
         }
 
         return guess;

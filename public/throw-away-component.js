@@ -11,7 +11,7 @@ AFRAME.registerComponent('throw-away-component', {
         });
 
         Context_AF.el.addEventListener('mouseup', function(event) {
-            //console.log("upp!!!!!!!!");
+            //console.log("up!!!!!!!!");
 
             let posZ = this.getAttribute("position").z;
             let posY = this.getAttribute("position").y;
@@ -24,23 +24,21 @@ AFRAME.registerComponent('throw-away-component', {
                     var id = this.getAttribute("id");
 
                     if (posX <= -9 && posX >= -12) {
-                        console.log("score in 1");
-                        console.log(id);
+                        //console.log("score in 1");
+                        //console.log(id);
                         Context_AF.updatePlane(1, id);
                         Context_AF.updateButton();
                     }
                     if (posX <= 1.5 && posX >= -1.5) {
-                        console.log("score in 2");
+                        //console.log("score in 2");
                         Context_AF.updatePlane(2, id);
                         Context_AF.updateButton();
                     }
                     if (posX <= 12 && posX >= 9) {
-                        console.log("score in 3");
+                        //console.log("score in 3");
                         Context_AF.updatePlane(3, id);
                         Context_AF.updateButton();
                     }
-                    
-                    console.log(posY + ", " + posZ);
                 }
             }
         });
@@ -64,10 +62,11 @@ AFRAME.registerComponent('throw-away-component', {
         let score3 = document.getElementById('score3');
 
         if(score1.getAttribute("text").value != '' && score2.getAttribute("text").value != '' && score3.getAttribute("text").value != '') {
-            //console.log(score1.getAttribute("text").value)
+            //make green when valid guess can be submitted
             button.setAttribute('material', 'color: green');
         }
         else {
+            //invalid guess
             button.setAttribute('material', 'color: red');
         }
 

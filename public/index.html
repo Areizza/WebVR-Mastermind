@@ -28,7 +28,7 @@
             let socket = io();
 
             socket.on('connect', function(){
-                console.log("I am connected too");
+                console.log("INDEX: I am connected");
             });
 
             //listening for 'color_change' event then using the data/object sent to change colour
@@ -42,7 +42,7 @@
         </script>
     </head>
     <body>
-        <a-scene physics='gravity: -9.8; debug: true'>
+        <a-scene physics='gravity: -9.8'>
             <a-entity id="bottomBound"
                       position="0 -1 0"
                       rotation="-90 0 0"
@@ -369,25 +369,34 @@
 
             <!-- show what is in the boxes -->
             <a-entity   id="score1"
-                        material="color: black; shader: flat;"
+                        material="color: white; shader: flat;"
                         position="-10.5 4 -19"
                         width="3"
                         height="3"
                         text="value: ">
             </a-entity>
             <a-entity   id="score2"
-                        material="color: black; shader: flat;"
+                        material="color: white; shader: flat;"
                         position="0 4 -19"
                         width="3"
                         height="3"
                         text="value: ">
             </a-entity>
             <a-entity   id="score3"
-                        material="color: black; shader: flat;"
+                        material="color: white; shader: flat;"
                         position="10.5 4 -19"
                         width="3"
                         height="3"
                         text="value: ">
+            </a-entity>
+
+            <!-- welcome message -->
+            <a-entity   id="welcome"
+                        material="color: white; shader: flat;"
+                        position="0 6 -19"
+                        width="3"
+                        height="3"
+                        text="value: Welcome Codebreaker; color: black; width: 20; align: center;">
             </a-entity>
 
             <!-- submission button -->
@@ -414,7 +423,7 @@
                         rotation="180 90 180"
                         width="3"
                         height="3"
-                        text="value: SUBMIT; width: 10; align: center;"
+                        text="value: GUESS; width: 10; align: center;"
                         check-answer-component>
             </a-entity>
 
@@ -437,10 +446,10 @@
             <!-- camera and cursor -->
             <!-- https://wmurphyrd.github.io/aframe-super-hands-component/examples/ -->
             <a-entity camera
-                      wasd-controls
+                      wasd-controls="acceleration: 100"
                       look-controls="pointerLockEnabled:true"
                       collider-check
-                      position="0 3.5 1.5"
+                      position="-4.418 3.5 -3.519"
                       raycaster="objects: .grabbable; far: 100; interval: 100;"
                       cursor="rayOrigin:mouse"
                       static-body="shape: sphere;"

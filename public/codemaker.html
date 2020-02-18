@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="/socket.io/socket.io.js"></script>
+        <style>
+            body,h1,h2,h3,h4,h5 {font-family: "Helvetica", sans-serif}
+            body {font-size: 16px; padding: 10px;}
+            .header {text-align: center; padding: 10px; background-color: black; color: white;}
+            .codeSection {text-align: center; padding: 10px; margin: auto; background-color: lightgrey;}
+            .feedback {text-align: center; padding: 10px; margin: auto; background-color: black; color: white;}
+            .upper {text-transform: uppercase;}
+            .button {text-align: center; padding: 10px; margin: 20px; cursor: pointer;}
+            .button:hover, .button:active {font-weight: bold; font-size: 20px;}
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Welcome Codemaker.</h1>
+            <hr>
+            <h3>This is a simplified Mastermind game.</h3>
+        </div>
+        </br>
+        <p><u>If you have never played Mastermind before:</u></br>
+            <ol>
+                <li>Your partner (Codebreaker) will submit a guess for the code</li>
+                <li>You will give them feedback by pressing the buttons below to light up their scene in colours (with <b>white SPACE</b> in between each selection)</li>
+                <li>Repeat until they correctly guess the code</li>
+            </ol>
+        </br>
+        For example, <b style="color: green">GREEN</b> would indicate that the codebreaker used the right colour and right position. <b>YELLOW</b> would indicate that they used the right colour but in the wrong position. Solid <b style="color: red">RED</b> would indicate that the guess is completely incorrect.</p>
+        </br>
+        <div class="codeSection">
+            <h2>The code is: </h2>
+            <span id="color1"></span>
+            <span id="color2"></span>
+            <span id="color3"></span>
+            <h3 id="output" class="upper"></h2>
+        </div>
+        </br>
+        <div class="codeSection">
+            <h2>The Codebreaker guessed: </h2>
+            <span id="guess1"></span>
+            <span id="guess2"></span>
+            <span id="guess3"></span>
+            <h2 id="guesses" class="upper">Nothing</h2>
+        </div>
+        </br>
+        <div class="feedback">
+            <h2>Provide feedback:</h2>
+            <div id="white" class="button" style="background-color:white; color:black;">SPACE</div>
+            <div id="red" class="button" style="background-color:red; color:whitesmoke;">WRONG</div>
+            <div id="green" class="button" style="background-color:green; color:whitesmoke;">CORRECT</div>
+            <div id="yellow" class="button" style="background-color:yellow; color:black;">INCORRECT POSITION</div>
+        </div>
+
+        <!-- adding script tag at the end so that the body loads first -->
+        <script>
+            let socket = io();
+
+            socket.on('connect', function(){
+                console.log("CODEMAKER: I am connected");
+            });
+
+            //listening for 'check_answer' event then using the data/object sent
+            socket.on('check_answer', function(data){
+                //console.log("is this the right password? " + data);
+                
+                //show in html on page
+                if(data[0] != '' && data[1] != '' && data[2] != '') {
+                    document.getElementById("guesses").innerHTML = data[0] + ", " + data[1] + ", " + data[2];
+                    document.getElementById("guess1").setAttribute("style", "height: 25px; width: 25px; background-color: " + data[0] + "; border-radius: 50%; display: inline-block;");
+                    document.getElementById("guess2").setAttribute("style", "height: 25px; width: 25px; background-color: " + data[1] + "; border-radius: 50%; display: inline-block;");
+                    document.getElementById("guess3").setAttribute("style", "height: 25px; width: 25px; background-color: " + data[2] + "; border-radius: 50%; display: inline-block;");
+                }
+                else {
+                    document.getElementById("guesses").innerHTML = "Invalid Guess";
+                }
+            });
+
+            //add click events
+            document.querySelector("#red").addEventListener('click', function(){
+                socket.emit('red');
+            });
+
+            document.querySelector("#green").addEventListener('click', function(){
+                socket.emit('green');
+            });
+
+            document.querySelector("#yellow").addEventListener('click', function(){
+                socket.emit('yellow');
+            });
+
+            document.querySelector("#white").addEventListener('click', function(){
+                socket.emit('white');
+            });
+
+            var colorArray = ["red", "blue", "green", "yellow", "purple", "orange"]
+            var sequence = [];
+
+            function randomOrder() {
+                //random index number to the colour at that index
+                let randIdx = Math.floor((Math.random() * 5) + 1);
+                //console.log(colorArray[randIdx]);
+                return colorArray[randIdx];
+            }
+
+            function randomSequence() {
+                for (let i = 0; i < 3; i ++) {
+                    sequence.push(randomOrder())
+                }
+                //console.log(sequence);
+                return sequence;
+            }
+
+            //generate a random colour sequence for the code (can have repeats)
+            var pass = randomSequence();
+            document.getElementById("output").innerHTML = pass[0] + ", " + pass[1] + ", " + pass[2];
+            document.getElementById("color1").setAttribute("style", "height: 25px; width: 25px; background-color: " + pass[0] + "; border-radius: 50%; display: inline-block;");
+            document.getElementById("color2").setAttribute("style", "height: 25px; width: 25px; background-color: " + pass[1] + "; border-radius: 50%; display: inline-block;");
+            document.getElementById("color3").setAttribute("style", "height: 25px; width: 25px; background-color: " + pass[2] + "; border-radius: 50%; display: inline-block;");
+        </script>
+    </body>
+</html>
