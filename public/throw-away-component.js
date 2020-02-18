@@ -7,12 +7,11 @@ AFRAME.registerComponent('throw-away-component', {
 
         //add event listener for "click" event on whatever entity has this component
         Context_AF.el.addEventListener('mousedown', function(event) {
-            console.log("clicked!!!!!!!!");
-            //Context_AF.createCow();
+            //console.log("clicked!!!!!!!!");
         });
 
         Context_AF.el.addEventListener('mouseup', function(event) {
-            console.log("upp!!!!!!!!");
+            //console.log("upp!!!!!!!!");
 
             let posZ = this.getAttribute("position").z;
             let posY = this.getAttribute("position").y;
@@ -65,7 +64,7 @@ AFRAME.registerComponent('throw-away-component', {
         let score3 = document.getElementById('score3');
 
         if(score1.getAttribute("text").value != '' && score2.getAttribute("text").value != '' && score3.getAttribute("text").value != '') {
-            console.log(score1.getAttribute("text").value)
+            //console.log(score1.getAttribute("text").value)
             button.setAttribute('material', 'color: green');
         }
         else {

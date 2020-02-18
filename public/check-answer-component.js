@@ -1,7 +1,5 @@
 'use strict' //strict javascript
 
-var answer = [];
-
 AFRAME.registerComponent('check-answer-component', {
     schema: {},
     init: function()  {
@@ -13,9 +11,9 @@ AFRAME.registerComponent('check-answer-component', {
         });
 
         Context_AF.el.addEventListener('click', function(event) {
-            console.log("i am clicking")
-            answer = Context_AF.checkAnswer();
-            socket.emit('submitButton', answer);
+            //save to global variable
+            window.answer = Context_AF.checkAnswer();
+            socket.emit('submitButton', window.answer);
         });
         //make button larger on hover
         Context_AF.el.addEventListener('mouseenter', function(event) {
@@ -34,18 +32,16 @@ AFRAME.registerComponent('check-answer-component', {
         let score2 = document.getElementById('score2').getAttribute("text").value;
         let score3 = document.getElementById('score3').getAttribute("text").value;
 
-        let guess = [];
+        let guess = [score1, score2, score3];
 
         if(score1 != '' && score2 != '' && score3 != '') {
             console.log("ready to submit")
-
-            guess = [score1, score2, score3]
-
-            return guess;
         }
         else {
             console.log("not enough to submit")
         }
+
+        return guess;
 
     }
 });

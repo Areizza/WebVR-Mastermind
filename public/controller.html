@@ -8,7 +8,7 @@
     </head>
     <body>
         <h1>PASSWORD</h1>
-        <h2 id="output">aaaaa</h2>
+        <h2 id="output"></h2>
         <button id="red" style="background-color:red; color:whitesmoke;">RED</button>
         <button id="green" style="background-color:green; color:whitesmoke;">GREEN</button>
         <button id="blue" style="background-color:blue; color:whitesmoke;">BLUE</button>
@@ -26,13 +26,7 @@
 
             //listening for 'check_answer' event then using the data/object sent
             socket.on('check_answer', function(data){
-                // onlinecounter=data.total;
-                // console.log(data.total);
-                // for (var key in data.name) {
-                //     online[i]=key;
-                //     console.log(key);
-                // }
-                console.log("test function " + data)
+                console.log("is this the right password: " + data);
             });
 
             //add click events

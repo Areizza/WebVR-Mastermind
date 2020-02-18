@@ -8,6 +8,8 @@ const LISTEN_PORT = 8080; //make sure greater than 3000. Some ports are reserved
 
 app.use((express.static(__dirname + '/public'))); //set root dir to the public folder
 
+answer = [];
+
 //routes
 app.get('/', function(req,res) {
     res.sendFile(__dirname + '/public/index.html');
@@ -26,12 +28,10 @@ socketIO.on('connection', function(socket){
     })
 
     //custom events
-    var connectedUserNames = [1, 2, 3];
     socket.on('submitButton', function(data){
         console.log("checking event heard");
-        console.log(connectedUserNames)
         console.log(data);
-        socketIO.sockets.emit('check_answer', answer);
+        socketIO.sockets.emit('check_answer', data);
     });
 
     socket.on('red', function(data){
